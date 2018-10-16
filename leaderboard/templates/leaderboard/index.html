@@ -1,0 +1,166 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Leader Board</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        function validateForm() {
+            var x = document.forms["myForm"]["firstTeam"].value;
+            var y = document.forms["myForm"]["secondTeam"].value;
+            if (x == y) {
+                alert("Team name must be different for a match to happen!");
+                return false;
+            }
+        }
+
+    </script>
+</head>
+<style>
+
+.button {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 6px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+
+.button1 {
+    background-color: #f44336;
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.col-xs-2 {
+  padding:0;
+  margin-top: 6%;
+}
+
+.foo {
+    text-align:center;
+    margin-top: 4%;
+}
+
+.foo1 {
+    margin-top: 2%;
+    margin-left: 19.8%;
+}
+
+.outer {
+    margin-left: 20%;
+    margin-right: 15%;
+}
+
+.label1 {
+    margin-left: 100px;
+}
+
+.table {
+    width=400px;
+}
+
+
+.toot {
+    margin-top:45px;
+    margin-right:76px;
+}
+
+
+
+
+
+</style>
+<body>
+<div class="foo" align="centre">
+    <h2>Foosball leader board</h2>
+    <br><br>
+</div>
+<div class="outer">
+    <form name="myForm" action="" onsubmit="return validateForm()" method="post" class="form-inline">
+        {%csrf_token%}
+        <div>
+            <input type="text" name="firstTeam" value="" placeholder="First team name" class="form-control" required>
+            &nbsp;
+            &nbsp;
+            <input type="number" min="0" pattern="^[0-9]" name="firstScore" value="" placeholder="First team score"
+                   class="form-control" required>
+            &nbsp;
+            &nbsp;
+            <input type="text" name="secondTeam" value="" placeholder="Second team name" class="form-control" required>
+            &nbsp;
+            &nbsp;
+            <input type="number" min="0" pattern="^[0-9]" name="secondScore" value="" placeholder="Second team score"
+                   class="form-control" required>
+            &nbsp;
+            &nbsp;
+            <button type="submit" value="Submit" class="button">Create Match</button>
+        </div>
+    </form>
+</div>
+{%if table%}
+<div class="outer">
+    <div class="toot">
+        <p1><b><strong>Wins = 4 points, Loss = -1 point and Draw = 2 points</strong></b></p1><br><br>
+        <table class="table table-striped" border="2">
+            <tr>
+                <th>Team Name</th>
+                <th>Matches Played</th>
+                <th>Wins</th>
+                <th>Draws</th>
+                <th>Loss</th>
+                <th>Goals for</th>
+                <th>Goals against</th>
+                <th>Goal Difference</th>
+                <th>Points</th>
+            </tr>
+            {% for x in table%}
+            <tr>
+                <td> {{x.teamName}}</td>
+                <td>{{x.games_played}}</td>
+                <td>{{x.wins}}</td>
+                <td>{{x.draws}}</td>
+                <td>{{x.loss}}</td>
+                <td>{{x.goals_for}}</td>
+                <td>{{x.goals_against}}</td>
+                <td>{{x.goals_difference}}</td>
+                <td>{{x.points}}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+</div>
+{%else%}
+<div class="outer">
+    <h3>
+        No matches played yet.
+    </h3>
+</div>
+{%endif%}
+<div class="foo1">
+    <form name="" action="/leaderboard/delete" method="get">
+        <button type="submit" value="Delete Tables" class="button1">Delete Leader Board</button>
+    </form>
+</div>
+</body>
+</html>
